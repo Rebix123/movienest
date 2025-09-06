@@ -73,6 +73,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'movienest.wsgi.application'
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://movienest-1itg.onrender.com",
+    "https://www.yourcustomdomain.com",
+    "https://yourcustomdomain.com",
+]
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
