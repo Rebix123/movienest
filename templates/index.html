@@ -1,0 +1,176 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MovieNest - All Your Movies in One Place</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'asset/style.css' %}">
+  <link rel="shortcut icon" href="{% static 'asset/Movie Nest.png' %}" type="image/x-icon">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="/"><img src="{% static 'asset/logo.png' %}" alt="MovieNest Logo"></a>
+    </div>
+
+    <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="nav" id="nav-menu">
+      <ul>
+        <li><a href="{% url 'movie_list' %}">Movies</a></li>
+        <li><a href="{% url 'live' %}">Live</a></li>
+        <li><a href="{% url 'genre_list' %}">Genres</a></li>
+        <li><a href="{% url 'category_list' %}">Categories</a></li>
+        <li><a href="{% url 'series_list' %}">Series</a></li>
+        <li><a href="{% url 'movies_by_category' 6 %}">Anime</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="telegram">
+    <a href="https://t.me/movienestng">
+      <img src="{% static 'asset/telegram.jpg' %}" alt="Join us on Telegram">
+    </a>
+  </div>
+
+  <div class="alert alert-secondary" role="alert" style="font-weight: bolder; align-items: center;">
+    <p>Notice! This website makes use of pop ads which might be annoying to users. Kindly close any unwanted tab that pops up.</p>
+  </div>
+
+    <div class="s">
+    <div class="search">
+      <form method="GET" action="{% url 'search_movies' %}">
+        <input type="text" name="q" placeholder="Search..." required>
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+
+    <!--Live Matches-->
+    {% if live %}
+      <div class="green">
+        <h4>Live</h4>
+        <div class="span"></div>
+      </div>
+    {% endif %}
+    <div class="lives">
+      <div class="lives-inner" id="livesInner">
+        {% for live in live %}
+          <div class="live">
+            <a href="{% url 'live_details' live.id %}">
+              <div class="live-body">
+                <!-- Team 1 -->
+                <img src="{{ live.team_1.photo.url }}" alt="{{ live.team_1.name }}">
+                <h3>{{ live.team_1.name }}</h3>
+
+                <span><strong> vs </strong></span>
+
+                <!-- Team 2 -->
+                <img src="{{ live.team_2.photo.url }}" alt="{{ live.team_2.name }}">
+                <h3>{{ live.team_2.name }}</h3>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+
+
+
+  <!-- Latest Release -->
+  <div class="series">
+    <h2>Latest Release</h2>
+    <div class="movies">
+        {% for movie in movies %}
+          <div class="card">
+            <a href="{% url 'movie_detail' slug=movie.slug %} ">
+              <img src="{{ movie.image.url }}" class="card-img-top" alt="{{ movie.title }}">
+              <div class="card-body">
+                  <h3>{{ movie.title }}</h3>
+              </div>
+            </a>
+          </div>
+        {% empty %}
+          <p>No Movies found.</p>
+        {% endfor %}
+    </div>
+    <div class="btn">
+        <a href="{% url 'movie_list' %}"><button class="load-more">Load More</button></a>
+    </div>
+  </div>
+
+  <!-- Popular Series -->
+  <div class="series">
+    <h2>Series</h2>
+    <div class="movies">
+      {% for s in series %}
+        <div class="card">
+          <a href="{% url 'movie_detail' slug=s.slug %}">
+            <img src="{{ s.image.url }}" class="card-img-top" alt="{{ s.title }}">
+            <div class="card-body">
+                <h3>{{ s.title }}</h3>
+            </div>
+          </a>
+        </div>
+      {% empty %}
+        <p>No series found.</p>
+      {% endfor %}
+    </div>
+    <div class="btn">
+        <a href="{% url 'series_list' %}"><button class="load-more">Load More</button></a>
+    </div>
+  </div>
+
+  <!-- Popular Movies -->
+  <div class="series">
+    <h2>Popular Movies</h2>
+      <div class="movies">
+          {% for movie in popular_movies %}
+            <div class="card">
+              <a href="{% url 'movie_detail' slug=movie.slug %}">
+                <img src="{{ movie.image.url }}" class="card-img-top" alt="{{ movie.title }}">
+                <div class="card-body">
+                    <h3>{{ movie.title }}</h3>
+                </div>
+              </a>
+            </div>
+          {% empty %}
+            <p>No Movies found.</p>
+          {% endfor %}
+      </div>
+  </div>
+
+
+  <footer>
+    <p>MovieNest &copy;2025</p>
+    <p>Note: We do not own any of the movies here.</p>
+  </footer>
+
+  <!-- JS -->
+  <script src="{% static 'asset/main.js' %}"></script>
+  <script>
+  const livesInner = document.getElementById("livesInner");
+  let scrollAmount = 0;
+
+  function scrollLives() {
+    scrollAmount += 0.5; 
+    if (scrollAmount >= livesInner.scrollWidth - livesInner.parentElement.offsetWidth) {
+      scrollAmount = 0; 
+    }
+    livesInner.style.transform = `translateX(-${scrollAmount}px)`;
+    requestAnimationFrame(scrollLives);
+  }
+
+  scrollLives();
+</script>
+
+</body>
+</html>
