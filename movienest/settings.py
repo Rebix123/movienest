@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-!iq2o1_90k^$5qpreh9@$n-t8^+6h7@6#v72tg%04ovd6k(lv!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["www.sneakpeak.tv", "sneakpeak.tv", "movienest.pxxl.click", "www.movienest.pxxl.click"]
 
 
 # Application definition
